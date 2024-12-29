@@ -24,7 +24,7 @@ public class MemberServlet extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		request.setCharacterEncoding("utf-8");
-		String userid = request.getParameter("userid"); //요청 파라미터 받아서
+		String userid = request.getParameter("userid");
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
@@ -36,7 +36,6 @@ public class MemberServlet extends HttpServlet
 		
 		//insert informations
 		PrintWriter out = response.getWriter();
-
 		try {
 			dao.insert(member);
 			out.println("저장 완료");
