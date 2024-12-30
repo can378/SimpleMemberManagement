@@ -22,70 +22,45 @@
             width: 60px;
         }
     </style>
-    
     <script>
-        // 전체 선택/해제
+        // 모든 체크박스의 체크 상태를 토글
         function toggleAllCheckboxes(source) {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"].item-checkbox');
-            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
-        }
-
-        // 선택된 항목 삭제
-        function deleteSelectedItems() {
-            const selectedItems = Array.from(document.querySelectorAll('input[type="checkbox"].item-checkbox:checked'))
-                .map(checkbox => checkbox.value);
-            
-            if (selectedItems.length === 0) {
-                alert("선택된 항목이 없습니다.");
-                return;
-            }
-
-            // 선택된 항목 삭제 요청
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'deleteSelectedItems.do';
-            
-            selectedItems.forEach(item => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'cartIds';
-                input.value = item;
-                form.appendChild(input);
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
             });
-
-            document.body.appendChild(form);
-            form.submit();
         }
     </script>
 </head>
 <body>
     <h1>장바구니</h1>
-    <form action="updateCart.do" method="post">
-        <table>
-            <thead>
-                <tr>
-                    <th><input type="checkbox" onclick="toggleAllCheckboxes(this)" /></th>
-                    <th>상품id</th>
-                    <th>상품명</th>
-                    <th>가격</th>
-                    <th>수량</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="item" items="${cartList}">
-                    <tr>
-                        <td><input type="checkbox" class="item-checkbox" value="${item.cartId}" /></td>
-                        <td>${item.product.prodId}</td> <!-- 상품ID 출력 -->
-                        <td>${item.product.prodName}</td> <!-- 상품명 출력 -->
-                        <td>${item.product.prodPrice}</td> <!-- 상품 가격 출력 -->
-                        <td><input type="number" name="quantity_${item.cartId}" value="${item.cartCount}" min="0" /></td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-        <br />
-        <button type="button" onclick="deleteSelectedItems()">선택 항목 삭제</button>
-        <button type="submit">수량 업데이트</button>
-    </form>
+    <form action="/Cart.do" method="post">
+	    <input type="hidden" name="action" value="removeCart" />
+	    <table>
+	        <thead>
+	            <tr>
+	                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)" /></th>
+	                <th>상품id</th>
+	                <th>상품명</th>
+	                <th>가격</th>
+	                <th>수량</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <c:forEach var="item" items="${cartList}">
+	                <tr>
+	                    <td><input type="checkbox" name="cartIds" value="${item.cartId}" /></td>
+	                    <td>${item.product.prodId}</td>
+	                    <td>${item.product.prodName}</td>
+	                    <td>${item.product.prodPrice}</td>
+	                    <td><input type="number" name="quantities" value="${item.cartCount}" min="0" /></td>
+	                </tr>
+	            </c:forEach>
+	        </tbody>
+	    </table>
+	    <button type="submit">선택된 항목 제거</button>
+	</form>
+
+
 </body>
 </html>

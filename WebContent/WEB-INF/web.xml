@@ -23,4 +23,7 @@
     <servlet-name>MemberServlet</servlet-name>
     <url-pattern>/servlet/com.example.myweb.web.MemberServlet</url-pattern>
   </servlet-mapping>
+  
+  
+  	
 </web-app>
